@@ -52,6 +52,16 @@ def brute(input_text):
     return output_text
 
 
+def validate_input(input_text, shift_value):
+    if not all(x.isalpha() or x.isspace() for x in input_text):
+        return int("Error")
+
+    if shift_value > 25 or shift_value < 0:
+        return int("Error")
+
+    return True
+
+
 # Menu loop
 def main():
     while True:
@@ -68,17 +78,13 @@ def main():
             elif choice == Menu.ENCRYPT.value:
                 print("\n-ENCRYPT-")
 
-                text = str(input("Please enter a string " +
-                           "to encrypt (a-z or A-Z): "))
-                if not all(x.isalpha() or x.isspace() for x in text):
-                    int("Error")
-
+                text = input("Please enter a string " +
+                             "to encrypt (a-z or A-Z): ")
                 shift = int(input("Please enter how many indexes " +
                             "you want to shift (0-25): "))
-                if shift > 25 or shift < 0:
-                    int("Error")
 
-                cipher = crypt(text, shift, operator.add)
+                if validate_input(text, shift):
+                    cipher = crypt(text, shift, operator.add)
 
                 print("Your original string is: " + text)
                 print("Your encrypted string is: " + cipher)
@@ -86,17 +92,13 @@ def main():
             elif choice == Menu.DECRYPT.value:
                 print("\n-DECRYPT-")
 
-                cipher = str(input("Please enter a string " +
-                             "to decrypt (a-z or A-Z): "))
-                if not all(x.isalpha() or x.isspace() for x in cipher):
-                    int("Error")
-
+                cipher = input("Please enter a string " +
+                               "to decrypt (a-z or A-Z): ")
                 shift = int(input("Please enter how many indexes " +
                             "you want to shift (0-25): "))
-                if shift > 25 or shift < 0:
-                    int("Error")
 
-                text = crypt(cipher, shift, operator.sub)
+                if validate_input(cipher, shift):
+                    text = crypt(cipher, shift, operator.sub)
 
                 print("Your original string is: " + cipher)
                 print("Your decrypted string is: " + text)
@@ -104,12 +106,11 @@ def main():
             elif choice == Menu.BRUTE.value:
                 print("\n-BRUTE FORCE-")
 
-                cipher = str(input("Please enter a string " +
-                             "to decrypt (a-z or A-Z): "))
-                if not all(x.isalpha() or x.isspace() for x in cipher):
-                    int("Error")
+                cipher = input("Please enter a string " +
+                               "to decrypt (a-z or A-Z): ")
 
-                text = brute(cipher)
+                if validate_input(cipher, 1):
+                    text = brute(cipher)
 
                 print("Your original string is: " + cipher)
                 print("Your decrypted strings are: \n" + text)
